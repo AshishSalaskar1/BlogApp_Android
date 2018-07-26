@@ -75,6 +75,7 @@
                                       <entry key="assetType" value="IMAGE" />
                                       <entry key="iconShape" value="NONE" />
                                       <entry key="imageAsset" value="C:\Users\hp\Desktop\circleLogo.png" />
+                                      <entry key="outputName" value="ic_launcher_round" />
                                     </map>
                                   </option>
                                 </PersistentState>
