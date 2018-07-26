@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/rectbg"
+    tools:context=".MainActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarSetup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_dark"
+        android:minHeight="?android:attr/actionBarSize"
+
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile"
+        android:layout_width="193dp"
+        android:layout_height="146dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="132dp"
+        android:src="@mipmap/user"
+
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="297dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@mipmap/rect3"
+        android:fontFamily="@font/acme"
+        android:text="@string/save_account_settings"
+        android:textAllCaps="false"
+        android:textColor="@android:color/background_light"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="297sp"
+        android:layout_height="50sp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:background="@mipmap/rectmail"
+        android:ems="10"
+        android:hint="@string/name"
+        android:inputType="text"
+        android:paddingEnd="0dp"
+        android:paddingStart="20sp"
+        android:textColor="@color/common_google_signin_btn_text_dark_pressed"
+        android:textColorHint="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile" />
+
+    <ProgressBar
+        android:id="@+id/AccountSettingsBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarSetup" />
+
+</android.support.constraint.ConstraintLayout>
