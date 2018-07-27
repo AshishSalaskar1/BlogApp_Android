@@ -1,6 +1,7 @@
 package com.example.hp.blogapp;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,12 +17,25 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class register extends AppCompatActivity {
     private ProgressBar progressReg;
     private EditText emailR,passR,passCon;
     private Button registerB,loggedIn;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore fireStore;
+    private String user_id;
+    private Uri main_uri;
+    private Uri upload_uri;
+    private StorageReference mStorageRef;
+
 
 
     @Override
@@ -36,6 +50,7 @@ public class register extends AppCompatActivity {
         progressReg = findViewById(R.id.progressReg);
 
         mAuth = FirebaseAuth.getInstance();
+
 
         loggedIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +97,8 @@ public class register extends AppCompatActivity {
                 }
 
             }
+
+
         });
 
 

@@ -43,6 +43,7 @@ public class AccounrSetup extends AppCompatActivity {
     private ProgressBar progressBar;
     private CircleImageView userImg;
     private Uri main_uri = null;
+    private Uri default_uri = null;
     private FirebaseAuth mAuth;
     private boolean isChanged = true;
     private FirebaseFirestore fireStore;
@@ -70,6 +71,7 @@ public class AccounrSetup extends AppCompatActivity {
         fireStore = FirebaseFirestore.getInstance();
         Name = findViewById(R.id.name);
         userImg = findViewById(R.id.profile);
+        default_uri = Uri.parse("R.mipmap.user");
 
         //Evertime settings load check if data is already present in FireStore, if yes retrive and set name and image using glide
         fireStore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -93,6 +95,7 @@ public class AccounrSetup extends AppCompatActivity {
 
                     }
                     else{
+                        main_uri = default_uri;
                         Toast.makeText(AccounrSetup.this,"NO DATA EXISTS",Toast.LENGTH_LONG).show();
                     }
                 }
@@ -123,7 +126,8 @@ public class AccounrSetup extends AppCompatActivity {
                                 progressBar.setVisibility(View.INVISIBLE);
                             }
                         });
-                    } else {
+                    }
+                    else {
                         Toast.makeText(AccounrSetup.this, "No imaage", Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.INVISIBLE);
                     }

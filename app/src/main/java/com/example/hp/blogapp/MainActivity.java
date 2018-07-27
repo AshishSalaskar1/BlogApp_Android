@@ -1,6 +1,7 @@
 package com.example.hp.blogapp;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolBar;
     FirebaseAuth mAuth;
+    FloatingActionButton add_post_btn;
 
 
 
@@ -36,6 +38,16 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Blog App");
 
         mAuth = FirebaseAuth.getInstance();
+
+        add_post_btn = findViewById(R.id.addPostButton);
+
+        add_post_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent addPost = new Intent(MainActivity.this,NewPost.class);
+                startActivity(addPost);
+            }
+        });
 
     }
 

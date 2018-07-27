@@ -53,7 +53,7 @@
         android:background="@mipmap/rectmail"
         android:ems="10"
         android:hint="Password"
-        android:inputType="text"
+        android:inputType="textPassword"
         android:paddingEnd="0dp"
         android:paddingStart="20sp"
         android:textColor="@color/common_google_signin_btn_text_dark_pressed"
