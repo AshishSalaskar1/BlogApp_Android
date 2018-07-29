@@ -3,6 +3,7 @@ package com.example.hp.blogapp;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -32,10 +34,14 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import id.zelory.compressor.Compressor;
 
 public class AccounrSetup extends AppCompatActivity {
 
@@ -51,6 +57,7 @@ public class AccounrSetup extends AppCompatActivity {
     private StorageReference mStorageRef;
     Button Submit;
     private String user_id;
+    private Bitmap compressedImageBitmap;
 
 
 
@@ -114,8 +121,25 @@ public class AccounrSetup extends AppCompatActivity {
                         progressBar.setVisibility(View.VISIBLE);
 //                    String user_id = mAuth.getCurrentUser().getUid();
 
-                        StorageReference image_path = mStorageRef.child("Profile_Photos").child(user_id + ".jpg");
-                        image_path.putFile(main_uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                        File imageFile = new File(main_uri.getPath());
+
+                        try {
+                            compressedImageBitmap = new Compressor(AccounrSetup.this)
+                                    .setMaxHeight(100)
+                                    .setMaxWidth(100)
+                                    .setQuality(10)
+                                    .compressToBitmap(imageFile);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        //Uploadinf bitmap to firebase
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        compressedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                        byte[] thumbBitmap = baos.toByteArray();
+
+                        UploadTask thumbImage = mStorageRef.child("/Profile_Photos/thumbs").child(user_id+".jpg").putBytes(thumbBitmap);
+                        thumbImage.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                                 if (task.isSuccessful()) {
@@ -125,16 +149,18 @@ public class AccounrSetup extends AppCompatActivity {
                                     Toast.makeText(AccounrSetup.this, " Image Error" + error, Toast.LENGTH_LONG).show();
                                 }
                                 progressBar.setVisibility(View.INVISIBLE);
+
                             }
                         });
+//
                     }
                     else {
-                        Toast.makeText(AccounrSetup.this, "No imaage", Toast.LENGTH_LONG).show();
+                        Toast.makeText(AccounrSetup.this, "No image", Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.INVISIBLE);
                     }
                 }
                 else {
-
+                    Toast.makeText(AccounrSetup.this, "Image not changed", Toast.LENGTH_LONG).show();
                     saveToFirestore(null,Name.getText().toString());
                 }
             }
@@ -177,19 +203,22 @@ public class AccounrSetup extends AppCompatActivity {
     }
 
 //    private void saveToFirestore(@NonNull Task<UploadTask.TaskSnapshot> task,String uName) {
-    private void saveToFirestore( Task<UploadTask.TaskSnapshot> task,String uName) {
+    private void saveToFirestore(Task<UploadTask.TaskSnapshot> task, final String uName) {
 
-        Uri downloadUri;
-        //If task is not null that is change occured. So get new URI for image
+         Uri downloadUri;
+        //If task is not null that is change occured. So get new URI for image also change ThumbNail
         if(task != null) {
              downloadUri = task.getResult().getDownloadUrl();
+
+//
         }
-        //else if task is null ie no change URI is same as main_uri
+
         else {
              downloadUri = main_uri;
         }
         //Create map..with keys common and values
         Map<String,String> userMap= new HashMap<>();
+
         userMap.put("name",uName);
         userMap.put("image",downloadUri.toString());
         fireStore.collection("Users").document(user_id).set(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -206,6 +235,7 @@ public class AccounrSetup extends AppCompatActivity {
                 }
             }
         });
+
     }
 
 
