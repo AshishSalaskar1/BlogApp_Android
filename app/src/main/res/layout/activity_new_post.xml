@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/rectbg"
     tools:context=".NewPost">
 
     <android.support.v7.widget.Toolbar
@@ -20,41 +21,43 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/newPost_image"
+        android:id="@+id/newPostImage"
         android:layout_width="0dp"
-        android:layout_height="199dp"
+        android:layout_height="216dp"
         android:layout_marginBottom="300dp"
+        android:background="#8d8d8d"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarNewPost"
-        app:layout_constraintVertical_bias="0.105"
-        app:srcCompat="@android:color/holo_purple" />
+        app:layout_constraintVertical_bias="0.105" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/newPostDesc"
         android:layout_width="331dp"
-        android:layout_height="123dp"
+        android:layout_height="67dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Add Description...."
         android:inputType="textMultiLine"
+        android:textColor="@android:color/background_light"
+        android:textColorHint="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.528"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newPost_image"
+        app:layout_constraintTop_toBottomOf="@+id/newPostImage"
         app:layout_constraintVertical_bias="0.177" />
 
     <Button
-        android:id="@+id/newPost_Submit"
-        android:layout_width="297dp"
+        android:id="@+id/newPostBtn"
+        android:layout_width="326dp"
         android:layout_height="52dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="128dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
@@ -66,8 +69,22 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:layout_constraintTop_toBottomOf="@+id/newPost_text"
         app:layout_constraintVertical_bias="0.056" />
+
+    <ProgressBar
+        android:id="@+id/newPostProgress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:progressTint="@color/colorAccent"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/newPostImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarNewPost" />
 
 </android.support.constraint.ConstraintLayout>

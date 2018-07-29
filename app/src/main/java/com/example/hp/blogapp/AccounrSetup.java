@@ -84,14 +84,15 @@ public class AccounrSetup extends AppCompatActivity {
                         String image = task.getResult().getString("image");
 //                        Toast.makeText(AccounrSetup.this,"DATA EXISTS",Toast.LENGTH_LONG).show();
                         Name.setText(name);
-                        //GLIDE APP
+
+                        //GLIDE APP set default background
                         RequestOptions placeHolder = new RequestOptions();
                         placeHolder.placeholder(R.mipmap.user);
 
                         //Convert image string to URI and store it in mainImageUri
                         main_uri = Uri.parse(image);
 
-                        Glide.with(AccounrSetup.this).setDefaultRequestOptions(placeHolder).load(image).into(userImg);
+                        Glide.with(AccounrSetup.this).setDefaultRequestOptions( placeHolder.placeholder(R.mipmap.user)).load(image).into(userImg);
 
                     }
                     else{

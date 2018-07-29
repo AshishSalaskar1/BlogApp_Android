@@ -31,7 +31,7 @@
 
         <activity android:name=".register" />
         <activity android:name=".AccounrSetup" />
-        <activity android:name=".NewPost"></activity>
+        <activity android:name=".NewPost" android:parentActivityName=".MainActivity"/>
     </application>
 
 </manifest>
