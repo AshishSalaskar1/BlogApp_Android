@@ -2,9 +2,12 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@mipmap/rectbg">
+    android:background="#007be5"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp">
 
     <android.support.v7.widget.CardView
         android:layout_width="0dp"

@@ -4,6 +4,7 @@ package com.example.hp.blogapp;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -79,6 +82,22 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
             }
         });
 
+        //SetDate
+        long milliseconds = blogList.get(position).getTimeStamp().getTime();
+
+//        String dateString = DateFormat.format("dd/MM/yyyy", new Date(milliseconds)).toString();
+//        String dateString1 = DateFormat.format("E, dd MMM yy", new Date(millisecond)).toString();
+        String pattern = "E, dd MMM yy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String dateString1 = simpleDateFormat.format(new Date(milliseconds));
+        pattern = "HH:mm a";
+        simpleDateFormat = new SimpleDateFormat(pattern);
+        String dateString2 = simpleDateFormat.format(new Date(milliseconds));
+
+        holder.setDate(dateString1+" at "+dateString2);
+
+
+
 
     }
 
@@ -92,6 +111,7 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
 
         private TextView descView;
         private TextView userName;
+        private TextView postDate;
         private ImageView postImage;
         private CircleImageView userImage;
         private View mview;
@@ -115,6 +135,13 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
 
             userName = mview.findViewById(R.id.blogUsername);
             userName.setText(userNameText);
+
+        }
+
+        public void setDate(String dateOfPost){
+
+            postDate = mview.findViewById(R.id.blogDate);
+            postDate.setText(dateOfPost);
 
         }
 

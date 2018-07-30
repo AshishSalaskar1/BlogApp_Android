@@ -54,78 +54,81 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolBar);
         getSupportActionBar().setTitle("Blog App");
 
-        bottomNavigationView = findViewById(R.id.mainBottomNav);
-
-        //fragments
-        homeFragment = new HomeFragment();
-        notificationFragment = new NotificationFragment();
-        accountFragment = new AccountFragment();
-
-        replaceFragment(homeFragment);
-
-        //Onclick on Bottom Nav Bar
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-
-                    case R.id.bottomAccount:
-                        replaceFragment(accountFragment);
-                        return true;
-
-
-                    case R.id.bottomHome:
-                        replaceFragment(homeFragment);
-                        return true;
-
-
-                    case R.id.bottomNotification:
-                        replaceFragment(notificationFragment);
-                        return true;
-                }
-                return false;
-            }
-        });
-
-
-
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        add_post_btn = findViewById(R.id.addPostButton);
 
-        add_post_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                if(currentUser != null){
-                    user_id = mAuth.getCurrentUser().getUid();
-                    firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if(task.getResult().exists()){
-                                Intent addPost = new Intent(MainActivity.this,NewPost.class);
-                                startActivity(addPost);
-                            }
-                            else{
-                                Toast.makeText(MainActivity.this, "Please choose profile photo and name", Toast.LENGTH_LONG).show();
-                                Intent main = new Intent(MainActivity.this,AccounrSetup.class);
-                                startActivity(main);
-                            }
-                        }
-                    });
-                }
-                else{
-                    Toast.makeText(MainActivity.this, "Please choose profile photo and name", Toast.LENGTH_LONG).show();
-                    Intent main = new Intent(MainActivity.this,AccounrSetup.class);
-                    startActivity(main);
-                }
+     if(mAuth.getCurrentUser() != null) {
 
 
+         bottomNavigationView = findViewById(R.id.mainBottomNav);
 
-            }
-        });
+         //fragments
+         homeFragment = new HomeFragment();
+         notificationFragment = new NotificationFragment();
+         accountFragment = new AccountFragment();
 
+         replaceFragment(homeFragment);
+
+         //Onclick on Bottom Nav Bar
+         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+             @Override
+             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                 switch (item.getItemId()) {
+
+                     case R.id.bottomAccount:
+                         replaceFragment(accountFragment);
+                         return true;
+
+
+                     case R.id.bottomHome:
+                         replaceFragment(homeFragment);
+                         return true;
+
+
+                     case R.id.bottomNotification:
+                         replaceFragment(notificationFragment);
+                         return true;
+                 }
+                 return false;
+             }
+         });
+
+
+
+
+         add_post_btn = findViewById(R.id.addPostButton);
+
+         add_post_btn.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                 if (currentUser != null) {
+                     user_id = mAuth.getCurrentUser().getUid();
+                     firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                         @Override
+                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                             if (task.getResult().exists()) {
+                                 Intent addPost = new Intent(MainActivity.this, NewPost.class);
+                                 startActivity(addPost);
+                             } else {
+                                 Toast.makeText(MainActivity.this, "Please choose profile photo and name", Toast.LENGTH_LONG).show();
+                                 Intent main = new Intent(MainActivity.this, AccounrSetup.class);
+                                 startActivity(main);
+                             }
+                         }
+                     });
+                 } else {
+                     Toast.makeText(MainActivity.this, "Please choose profile photo and name", Toast.LENGTH_LONG).show();
+                     Intent main = new Intent(MainActivity.this, AccounrSetup.class);
+                     startActivity(main);
+                 }
+
+
+             }
+         });
+
+     }
     }
 
     @Override

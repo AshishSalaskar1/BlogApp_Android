@@ -3,22 +3,25 @@ package com.example.hp.blogapp;
 //import java.sql.Timestamp;
 
 
+import java.util.Date;
+
 //THIS IS THE MODEL CLASS
 public class BlogPost {
 
     public String image_url, image_thumb, desc,user_id;
+    public Date timeStamp;
 
 
     public BlogPost(){
 
     }
 
-    public BlogPost(String image_url, String image_thumb, String desc, String user_id) {
+    public BlogPost(String image_url, String image_thumb, String desc, String user_id,Date timeStamp) {
         this.image_url = image_url;
         this.image_thumb = image_thumb;
         this.desc = desc;
         this.user_id = user_id;
-//        this.timeStamp = timeStamp;
+       this.timeStamp = timeStamp;
     }
 
     public String getImage_url() {
@@ -54,11 +57,12 @@ public class BlogPost {
         this.user_id = user_id;
     }
 
-//    public Timestamp getTimeStamp() {
-//        return timeStamp;
-//    }
-//
-//    public void setTimeStamp(Timestamp timeStamp) {
-//        this.timeStamp = timeStamp;
-//    }
+    public Date getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Date timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
 }
