@@ -141,9 +141,9 @@ public class NewPost extends AppCompatActivity {
 
                                             Map<String,Object> postMap = new HashMap<>();
                                             postMap.put("image_url",downloadUrl);
-                                            postMap.put("description",postText);
+                                            postMap.put("desc",postText);
                                             postMap.put("user_id",user_id);
-                                            postMap.put("thumb",thumbUri);
+                                            postMap.put("image_thumb",thumbUri);
                                             postMap.put("timeStamp",FieldValue.serverTimestamp());
 
                                             //Finally add everything to collection

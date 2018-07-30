@@ -1,8 +1,12 @@
 package com.example.hp.blogapp;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.transition.FragmentTransitionSupport;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -27,6 +31,11 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton add_post_btn;
     private  String user_id;
 
+    private BottomNavigationView bottomNavigationView;
+    private HomeFragment homeFragment;
+    private AccountFragment accountFragment;
+    private NotificationFragment notificationFragment;
+
 
 
     @Override
@@ -44,6 +53,39 @@ public class MainActivity extends AppCompatActivity {
         toolBar = findViewById(R.id.toolbar);
         setSupportActionBar(toolBar);
         getSupportActionBar().setTitle("Blog App");
+
+        bottomNavigationView = findViewById(R.id.mainBottomNav);
+
+        //fragments
+        homeFragment = new HomeFragment();
+        notificationFragment = new NotificationFragment();
+        accountFragment = new AccountFragment();
+
+        //Onclick on Bottom Nav Bar
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+
+                    case R.id.bottomAccount:
+                        replaceFragment(accountFragment);
+                        return true;
+
+
+                    case R.id.bottomHome:
+                        replaceFragment(homeFragment);
+                        return true;
+
+
+                    case R.id.bottomNotification:
+                        replaceFragment(notificationFragment);
+                        return true;
+                }
+                return false;
+            }
+        });
+
+
 
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -133,4 +175,12 @@ public class MainActivity extends AppCompatActivity {
         mAuth.signOut();
         sendLogin();
     }
+
+    //Fragment transition to change fragment when pressed
+    private void replaceFragment(android.support.v4.app.Fragment fragment){
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_container,fragment);
+        fragmentTransaction.commit();
+    }
+
 }

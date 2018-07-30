@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottomHome"
+        android:icon="@drawable/baseline_home_black_18dp"
+        android:title="Home"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/bottomNotification"
+        android:icon="@drawable/baseline_notifications_black_18dp"
+        android:title="Notifications"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/bottomAccount"
+        android:icon="@drawable/baseline_account_circle_black_18dp"
+        android:title="Account"
+        app:showAsAction="always" />
+</menu>
