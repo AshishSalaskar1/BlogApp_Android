@@ -6,7 +6,7 @@ package com.example.hp.blogapp;
 import java.util.Date;
 
 //THIS IS THE MODEL CLASS
-public class BlogPost {
+public class BlogPost extends BlogPostId {
 
     public String image_url, image_thumb, desc,user_id;
     public Date timeStamp;

@@ -33,8 +33,10 @@ public class HomeFragment extends Fragment {
     private List<BlogPost> blogList;
     private DocumentSnapshot lastVisible;
     private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth mauth;
     private BlogRecycleAdapter blogRecycleAdapter;
     private boolean firstPageLoaded = true;
+
 
 
 
@@ -61,6 +63,7 @@ public class HomeFragment extends Fragment {
 if(FirebaseAuth.getInstance().getCurrentUser() != null) {
 
     firebaseFirestore = FirebaseFirestore.getInstance();
+    mauth = FirebaseAuth.getInstance();
 
     //Get Last item Scrolled in REcyclerView
     blog_list_View.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -100,9 +103,10 @@ if(FirebaseAuth.getInstance().getCurrentUser() != null) {
                 for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
 
                     if (doc.getType() == DocumentChange.Type.ADDED) {
-
+                        //Blog Id ..name same as that is Extender class
+                        String BlogPostId = doc.getDocument().getId();
                         //USE MODEL CLASS and save one object obtained into Model class list
-                        BlogPost blogPost = doc.getDocument().toObject(BlogPost.class);
+                        BlogPost blogPost = doc.getDocument().toObject(BlogPost.class).withId(BlogPostId);
 
                         if(firstPageLoaded){
                             blogList.add(blogPost);

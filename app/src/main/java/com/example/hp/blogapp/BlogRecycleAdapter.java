@@ -16,11 +16,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -32,6 +35,8 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
     private Context context;
     private String user_id;
     FirebaseFirestore firebaseFirestore;
+    FirebaseAuth mAuth;
+    String blogPostId, currentUser;
 
 
     //COnstructor which receives list of model class BlogPost
@@ -45,6 +50,9 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
 
         //INFLATE LAYOUT WITH CREATED LAYOUT ie blost_list_item
         firebaseFirestore =FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+         currentUser = mAuth.getCurrentUser().getUid();
+
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.blog_list_item,parent,false);
         //forGlide
@@ -57,11 +65,18 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
         //This gets the data..getDesc is constructor from Model class which fetches the data
+        //Get blogPOstId is var mentioned in extender class
+        final String blogPostId = blogList.get(position).BlogPostId;
+
+
         String desc_text = blogList.get(position).getDesc();
         holder.setDescText(desc_text);
 
         String download_uri = blogList.get(position).getImage_url();
-        holder.setImage(download_uri);
+        String thumb_uri = blogList.get(position).getImage_thumb();
+        holder.setImage(download_uri,thumb_uri);
+
+
 
 
         if(FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -101,8 +116,30 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
 
         holder.setDate(dateString1+" at "+dateString2);
 
+        holder.BlogLikeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                firebaseFirestore.collection("Posts/"+ blogPostId + "/Likes").document(currentUser).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                        if(!task.getResult().exists()){
+                            Map<String,Object> likeMap = new HashMap<>();
+                            likeMap.put("timeStamp", FieldValue.serverTimestamp());
+                            firebaseFirestore.collection("Posts/"+ blogPostId + "/Likes").document(currentUser).set(likeMap);
+                        }
+                        else{
+
+                            firebaseFirestore.collection("Posts/"+ blogPostId + "/Likes").document(currentUser).delete();
+                        }
+
+                    }
+                });
 
 
+            }
+        });
 
     }
 
@@ -120,11 +157,19 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
         private ImageView postImage;
         private CircleImageView userImage;
         private View mview;
+        private TextView blogLikeCount;
+        private ImageView BlogLikeBtn;
+
 
 
         public ViewHolder(View itemView) {
             super(itemView);
             mview = itemView;
+
+            BlogLikeBtn = mview.findViewById(R.id.blog_like);
+
+
+
         }
 
         //Set description text
@@ -151,11 +196,11 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
         }
 
         //Set Image
-        public void setImage(String downloadURL){
+        public void setImage(String downloadURL, String thumb_url){
             postImage = mview.findViewById(R.id.blogImage);
 
             //use glide to save image into ImageView
-            Glide.with(context).load(downloadURL).into(postImage);
+            Glide.with(context).load(downloadURL).thumbnail(Glide.with(context).load(thumb_url)).into(postImage);
         }
 
         //User Image
