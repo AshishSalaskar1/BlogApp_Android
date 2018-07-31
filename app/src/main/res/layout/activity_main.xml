@@ -32,7 +32,7 @@
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/plus"
-        app:backgroundTint="@color/colorAccent"
+        app:backgroundTint="@color/btnBack"
         app:layout_constraintBottom_toTopOf="@+id/mainBottomNav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
