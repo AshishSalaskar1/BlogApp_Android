@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -62,25 +63,29 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
         String download_uri = blogList.get(position).getImage_url();
         holder.setImage(download_uri);
 
-        //get user id and retrieve user image stored in Users Collection
-        user_id = blogList.get(position).getUser_id();
-        firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-               if (task.isSuccessful()){
-                    if(task.getResult().exists()){
-                        String name = task.getResult().getString("name");
-                        String image = task.getResult().getString("image");
 
-                        // populate both image and username to RwcyclerView
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            //get user id and retrieve user image stored in Users Collection
+            user_id = blogList.get(position).getUser_id();
+            firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().exists()) {
+                            String name = task.getResult().getString("name");
+                            String image = task.getResult().getString("image");
 
-                        holder.setUserImage(image);
-                        holder.setUserName(name);
+                            // populate both image and username to RwcyclerView
 
+                            holder.setUserImage(image);
+                            holder.setUserName(name);
+
+                        }
                     }
-               }
-            }
-        });
+                }
+            });
+
+        }
 
         //SetDate
         long milliseconds = blogList.get(position).getTimeStamp().getTime();

@@ -5,7 +5,7 @@
     android:id="@+id/mar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#007be5"
+    android:background="#dcdcdc"
     android:paddingBottom="5dp"
     android:paddingTop="5dp">
 
