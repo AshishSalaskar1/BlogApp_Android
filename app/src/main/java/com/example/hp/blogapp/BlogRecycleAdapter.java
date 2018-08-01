@@ -44,7 +44,7 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
 
     //COnstructor which receives list of model class BlogPost
     public BlogRecycleAdapter(List<BlogPost> blog_list){
-            this.blogList = blog_list;
+        this.blogList = blog_list;
     }
 
     @NonNull
@@ -54,7 +54,7 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
         //INFLATE LAYOUT WITH CREATED LAYOUT ie blost_list_item
         firebaseFirestore =FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-         currentUser = mAuth.getCurrentUser().getUid();
+        currentUser = mAuth.getCurrentUser().getUid();
 
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.blog_list_item,parent,false);
@@ -138,6 +138,20 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
             }
         });
 
+        //Get Comments Count
+        firebaseFirestore.collection("Posts/"+ blogPostId + "/Comments").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                if(!documentSnapshots.isEmpty()){
+                    int countComments = documentSnapshots.size();
+                    holder.setComments(countComments);
+                }
+                else{
+                    holder.setComments(0);
+                }
+            }
+        });
+
 
         //GEt like
         firebaseFirestore.collection("Posts/"+ blogPostId + "/Likes").document(currentUser).addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -207,6 +221,7 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
         private CircleImageView userImage;
         private View mview;
         private TextView blogLikeCount;
+        private TextView blogCommentCount;
         private ImageView BlogLikeBtn;
         private ImageView BlogCommentBtn;
 
@@ -217,9 +232,13 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
             mview = itemView;
 
             BlogLikeBtn = mview.findViewById(R.id.blog_like);
+            blogCommentCount = mview.findViewById(R.id.blog_comment_count);
             BlogCommentBtn = mview.findViewById(R.id.blog_comment);
-
-
+            blogLikeCount = mview.findViewById(R.id.blog_like_count);
+            userName = mview.findViewById(R.id.commentUsername);
+            postDate = mview.findViewById(R.id.blogDate);
+            postImage = mview.findViewById(R.id.blogImage);
+            userImage = mview.findViewById(R.id.commentProfilePic);
 
         }
 
@@ -234,21 +253,21 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
         //UserName
         public void setUserName(String userNameText){
 
-            userName = mview.findViewById(R.id.commentUsername);
+
             userName.setText(userNameText);
 
         }
 
         public void setDate(String dateOfPost){
 
-            postDate = mview.findViewById(R.id.blogDate);
+
             postDate.setText(dateOfPost);
 
         }
 
         //Set Image
         public void setImage(String downloadURL, String thumb_url){
-            postImage = mview.findViewById(R.id.blogImage);
+
 
             //use glide to save image into ImageView
             Glide.with(context).load(downloadURL).thumbnail(Glide.with(context).load(thumb_url)).into(postImage);
@@ -257,7 +276,7 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
         //User Image
         public void setUserImage(String userImage_URL){
 
-            userImage = mview.findViewById(R.id.commentProfilePic);
+
             Glide.with(context).load(userImage_URL).into(userImage);
 
         }
@@ -265,8 +284,14 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
         //Set Like Count
         private void setLikes(int count){
             String text = count + " Likes";
-            blogLikeCount = mview.findViewById(R.id.blog_like_count);
+
             blogLikeCount.setText(text);
+        }
+
+        private void setComments(int countC){
+            String textC = countC + " Comments";
+
+            blogCommentCount.setText(textC);
         }
     }
 

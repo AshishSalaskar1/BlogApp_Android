@@ -56,6 +56,8 @@ public class Comments extends AppCompatActivity {
         commentsText = findViewById(R.id.comment_text);
         commentSubmit = findViewById(R.id.commentSubmit);
 
+        commentsText.requestFocus();
+
 
 
         mAuth = FirebaseAuth.getInstance();
