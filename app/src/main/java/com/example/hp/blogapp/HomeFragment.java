@@ -108,6 +108,8 @@ if(FirebaseAuth.getInstance().getCurrentUser() != null) {
                         //USE MODEL CLASS and save one object obtained into Model class list
                         BlogPost blogPost = doc.getDocument().toObject(BlogPost.class).withId(BlogPostId);
 
+
+
                         if(firstPageLoaded){
                             blogList.add(blogPost);
                         }

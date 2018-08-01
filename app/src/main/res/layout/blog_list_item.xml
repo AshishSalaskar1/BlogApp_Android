@@ -26,8 +26,8 @@
 
             <ImageView
                 android:id="@+id/blog_like"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
@@ -36,8 +36,21 @@
                 app:layout_constraintTop_toBottomOf="@+id/blogDescription"
                 app:srcCompat="@mipmap/image_like_gray" />
 
+            <ImageView
+                android:id="@+id/blog_comment"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="260dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/blogDescription"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/action_comment_icon_web" />
+
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/blogProfilePic"
+                android:id="@+id/commentProfilePic"
                 android:layout_width="69dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="16dp"
@@ -47,14 +60,16 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/blogUsername"
+                android:id="@+id/commentUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="28dp"
+                android:fontFamily="@font/acme"
                 android:text="Username"
+                android:textColor="#2a2929"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/blogProfilePic"
+                app:layout_constraintStart_toEndOf="@+id/commentProfilePic"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -63,8 +78,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:text="Jan 20, 2018"
-                app:layout_constraintStart_toEndOf="@+id/blogProfilePic"
-                app:layout_constraintTop_toBottomOf="@+id/blogUsername" />
+                app:layout_constraintStart_toEndOf="@+id/commentProfilePic"
+                app:layout_constraintTop_toBottomOf="@+id/commentUsername" />
 
             <ImageView
                 android:id="@+id/blogImage"
@@ -75,17 +90,20 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/blogProfilePic"
+                app:layout_constraintTop_toBottomOf="@+id/commentProfilePic"
                 app:srcCompat="@drawable/image_placeholder" />
 
             <TextView
                 android:id="@+id/blogDescription"
                 android:layout_width="359dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginEnd="18dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="18dp"
+                android:fontFamily="@font/averia_libre_bold"
                 android:text="Lorem ipusm metaflytica sem uin postide asnsdh the sgt as lorem "
+                android:textColor="#002863"
+                android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/blogImage" />
@@ -98,6 +116,23 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
                 android:text="TextView"
+                android:textColor="#333333"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/blog_like"
+                app:layout_constraintTop_toBottomOf="@+id/blogDescription"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/blog_comment_count"
+                android:layout_width="80dp"
+                android:layout_height="19dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="256dp"
+                android:layout_marginTop="8dp"
+                android:text="TextView"
+                android:textColor="#333333"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/blog_like"
                 app:layout_constraintTop_toBottomOf="@+id/blogDescription"

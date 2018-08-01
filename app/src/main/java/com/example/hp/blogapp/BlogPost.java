@@ -12,6 +12,8 @@ public class BlogPost extends BlogPostId {
     public Date timeStamp;
 
 
+
+    //MUST ADD NEEDED
     public BlogPost(){
 
     }

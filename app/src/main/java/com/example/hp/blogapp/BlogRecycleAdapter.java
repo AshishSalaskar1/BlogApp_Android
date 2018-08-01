@@ -2,9 +2,9 @@ package com.example.hp.blogapp;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +72,7 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
         final String blogPostId = blogList.get(position).BlogPostId;
 
         //Faster retrieving and reduce delay
-        holder.setIsRecyclable(false);
+//        holder.setIsRecyclable(false);
 
 
         String desc_text = blogList.get(position).getDesc();
@@ -121,6 +121,7 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
         String dateString2 = simpleDateFormat.format(new Date(milliseconds));
 
         holder.setDate(dateString1+" at "+dateString2);
+
 
 
         //Get Like Count
@@ -179,6 +180,16 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
             }
         });
 
+        //Comment
+        holder.BlogCommentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent commentIntent = new Intent(context,Comments.class);
+                commentIntent.putExtra("BlogPostId",blogPostId);
+                context.startActivity(commentIntent);
+            }
+        });
+
     }
 
     //Set This urself
@@ -197,6 +208,7 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
         private View mview;
         private TextView blogLikeCount;
         private ImageView BlogLikeBtn;
+        private ImageView BlogCommentBtn;
 
 
 
@@ -205,6 +217,7 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
             mview = itemView;
 
             BlogLikeBtn = mview.findViewById(R.id.blog_like);
+            BlogCommentBtn = mview.findViewById(R.id.blog_comment);
 
 
 
@@ -221,7 +234,7 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
         //UserName
         public void setUserName(String userNameText){
 
-            userName = mview.findViewById(R.id.blogUsername);
+            userName = mview.findViewById(R.id.commentUsername);
             userName.setText(userNameText);
 
         }
@@ -244,7 +257,7 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
         //User Image
         public void setUserImage(String userImage_URL){
 
-            userImage = mview.findViewById(R.id.blogProfilePic);
+            userImage = mview.findViewById(R.id.commentProfilePic);
             Glide.with(context).load(userImage_URL).into(userImage);
 
         }
