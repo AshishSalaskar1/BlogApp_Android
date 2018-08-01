@@ -16,8 +16,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -68,6 +71,9 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
         //Get blogPOstId is var mentioned in extender class
         final String blogPostId = blogList.get(position).BlogPostId;
 
+        //Faster retrieving and reduce delay
+        holder.setIsRecyclable(false);
+
 
         String desc_text = blogList.get(position).getDesc();
         holder.setDescText(desc_text);
@@ -116,6 +122,38 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
 
         holder.setDate(dateString1+" at "+dateString2);
 
+
+        //Get Like Count
+        firebaseFirestore.collection("Posts/"+ blogPostId + "/Likes").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                if(!documentSnapshots.isEmpty()){
+                    int count = documentSnapshots.size();
+                    holder.setLikes(count);
+                }
+                else{
+                    holder.setLikes(0);
+                }
+            }
+        });
+
+
+        //GEt like
+        firebaseFirestore.collection("Posts/"+ blogPostId + "/Likes").document(currentUser).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+                if(documentSnapshot.exists()) {
+                    holder.BlogLikeBtn.setImageDrawable(context.getDrawable(R.mipmap.image_like_red));
+                }
+                else{
+                    holder.BlogLikeBtn.setImageDrawable(context.getDrawable(R.mipmap.image_like_gray));
+                }
+            }
+        });
+
+
+
+        //Pressed Like Button
         holder.BlogLikeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -209,6 +247,13 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
             userImage = mview.findViewById(R.id.blogProfilePic);
             Glide.with(context).load(userImage_URL).into(userImage);
 
+        }
+
+        //Set Like Count
+        private void setLikes(int count){
+            String text = count + " Likes";
+            blogLikeCount = mview.findViewById(R.id.blog_like_count);
+            blogLikeCount.setText(text);
         }
     }
 
