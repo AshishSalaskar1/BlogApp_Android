@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,7 +29,8 @@ import java.util.Map;
 public class register extends AppCompatActivity {
     private ProgressBar progressReg;
     private EditText emailR,passR,passCon;
-    private Button registerB,loggedIn;
+    private Button registerB;
+    private TextView loggedIn;
     private FirebaseAuth mAuth;
     private FirebaseFirestore fireStore;
     private String user_id;

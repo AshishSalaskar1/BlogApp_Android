@@ -4,5 +4,8 @@
         <item>@font/acme</item>
         <item>@font/allerta_stencil</item>
         <item>@font/autour_one</item>
+        <item>@font/averia_libre_bold</item>
+        <item>@font/averia_libre_light</item>
+        <item>@font/open_sans_semibold</item>
     </array>
 </resources>

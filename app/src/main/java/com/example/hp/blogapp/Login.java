@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,7 +21,8 @@ import com.google.firebase.auth.FirebaseUser;
 public class Login extends AppCompatActivity {
 
     private EditText loginEmailText,loginPassText;
-    private Button loginButton,loginRegButton;
+    private Button loginButton;
+    private TextView loginRegButton;
     private FirebaseAuth mAuth;
     private ProgressBar loginProgressBar;
 
@@ -35,7 +37,7 @@ public class Login extends AppCompatActivity {
         loginButton = findViewById(R.id.regB);
         loginRegButton=findViewById(R.id.createNewB);
         //Set progressBar as indeterminate as no progress in percentage
-        loginProgressBar = (ProgressBar)findViewById(R.id.progressLogin);
+        loginProgressBar = findViewById(R.id.progressLogin);
 
         loginRegButton.setOnClickListener(new View.OnClickListener() {
             @Override
