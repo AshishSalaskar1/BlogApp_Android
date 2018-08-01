@@ -34,7 +34,7 @@
         <activity
             android:name=".NewPost"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".Comments" android:parentActivityName=".MainActivity"/>
+        <activity android:name=".Comments" android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

@@ -73,7 +73,8 @@ public class Comments extends AppCompatActivity {
         comment_list_view.setAdapter(commentsRecyclerAdapter);
 
 //        Retrieve Comments into Recycler view
-        Query mainQuery = firebaseFirestore.collection("Posts/" + BlogPostId + "/Comments");
+        Query mainQuery = firebaseFirestore.collection("Posts/" + BlogPostId + "/Comments")
+                .orderBy("timeStamp", Query.Direction.ASCENDING);
 
         mainQuery.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
