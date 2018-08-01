@@ -61,14 +61,13 @@
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_view_comments"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/recycler_view_comments" />
 
     <ImageView
         android:id="@+id/commentSubmit"
         android:layout_width="49dp"
         android:layout_height="46dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="56dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -77,7 +76,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/comment_text"
         app:layout_constraintTop_toBottomOf="@+id/recycler_view_comments"
-        app:layout_constraintVertical_bias="0.076"
         app:srcCompat="@drawable/action_comment_send_web" />
 
 </android.support.constraint.ConstraintLayout>

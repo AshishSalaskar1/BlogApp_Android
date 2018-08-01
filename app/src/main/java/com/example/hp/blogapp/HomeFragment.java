@@ -158,7 +158,9 @@ public class HomeFragment extends Fragment {
                         if (doc.getType() == DocumentChange.Type.ADDED) {
 
                             //USE MODEL CLASS and save one object obtained into Model class list
-                            BlogPost blogPost = doc.getDocument().toObject(BlogPost.class);
+                            String BlogPostId = doc.getDocument().getId();
+                            //USE MODEL CLASS and save one object obtained into Model class list
+                            BlogPost blogPost = doc.getDocument().toObject(BlogPost.class).withId(BlogPostId);
                             blogList.add(blogPost);
 
                             blogRecycleAdapter.notifyDataSetChanged();
