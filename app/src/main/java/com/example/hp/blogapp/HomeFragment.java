@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
 
                     boolean lastItem = !recyclerView.canScrollVertically(1);
 
-                    if(lastItem){
+                    if (lastItem) {
 //                Toast.makeText(getContext(),"end of 3 posts",Toast.LENGTH_SHORT).show();
                         loadMorePosts();
                     }
@@ -81,96 +81,99 @@ public class HomeFragment extends Fragment {
             });
 
 
-            //Order according to date
-            Query firstQuery =firebaseFirestore.collection("Posts")
-                    .orderBy("timeStamp", Query.Direction.DESCENDING)
-                    .limit(3);
+            if (mauth.getCurrentUser() != null) {
+                //Order according to date
+                Query firstQuery = firebaseFirestore.collection("Posts")
+                        .orderBy("timeStamp", Query.Direction.DESCENDING)
+                        .limit(3);
 
 
-            //getActivity bcoz to stop the on scroll listener after page closed bcause it will still call load more post
-            firstQuery.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                //getActivity bcoz to stop the on scroll listener after page closed bcause it will still call load more post
+                firstQuery.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
 
 
-                    //get lastVisibile iff first page not loaded at starting
-                    if(firstPageLoaded) {
-                        // Get the last visible documentSnapshot
-                        lastVisible = documentSnapshots.getDocuments()
-                                .get(documentSnapshots.size() - 1);
-                    }
-
-                    for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
-
-                        if (doc.getType() == DocumentChange.Type.ADDED) {
-                            //Blog Id ..name same as that is Extender class
-                            String BlogPostId = doc.getDocument().getId();
-                            //USE MODEL CLASS and save one object obtained into Model class list
-                            BlogPost blogPost = doc.getDocument().toObject(BlogPost.class).withId(BlogPostId);
-
-
-
-                            if(firstPageLoaded){
-                                blogList.add(blogPost);
-                            }
-                            //Add new post to top
-                            else{
-                                blogList.add(0,blogPost);
-                            }
-
-
-                            blogRecycleAdapter.notifyDataSetChanged();
+                        //get lastVisibile iff first page not loaded at starting
+                        if (firstPageLoaded) {
+                            // Get the last visible documentSnapshot
+                            lastVisible = documentSnapshots.getDocuments()
+                                    .get(documentSnapshots.size() - 1);
                         }
+
+                        for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
+
+                            if (doc.getType() == DocumentChange.Type.ADDED) {
+                                //Blog Id ..name same as that is Extender class
+                                String BlogPostId = doc.getDocument().getId();
+                                //USE MODEL CLASS and save one object obtained into Model class list
+                                BlogPost blogPost = doc.getDocument().toObject(BlogPost.class).withId(BlogPostId);
+
+
+                                if (firstPageLoaded) {
+                                    blogList.add(blogPost);
+                                }
+                                //Add new post to top
+                                else {
+                                    blogList.add(0, blogPost);
+                                }
+
+
+                                blogRecycleAdapter.notifyDataSetChanged();
+                            }
+                        }
+
                     }
 
-                }
 
+                });
 
-
-            });
-
+            }
         }
         // Inflate the layout for this fragment
         return view;
     }
 
 
-    private void loadMorePosts(){
-        Query nextQuery =firebaseFirestore.collection("Posts")
-                .orderBy("timeStamp", Query.Direction.DESCENDING)
-                .startAfter(lastVisible)
-                .limit(3);
+    private void loadMorePosts() {
 
-        nextQuery.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+        if (mauth.getCurrentUser() != null) {
+            Query nextQuery = firebaseFirestore.collection("Posts")
+                    .orderBy("timeStamp", Query.Direction.DESCENDING)
+                    .startAfter(lastVisible)
+                    .limit(3);
 
-                //If no more posts than docSnaps will be empty leading to crash
-                if(!documentSnapshots.isEmpty()) {
+            nextQuery.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
 
-                    // Get the last visible documentSnapshot
-                    lastVisible = documentSnapshots.getDocuments()
-                            .get(documentSnapshots.size() - 1);
+                    //If no more posts than docSnaps will be empty leading to crash
+                    if (!documentSnapshots.isEmpty()) {
+
+                        // Get the last visible documentSnapshot
+                        lastVisible = documentSnapshots.getDocuments()
+                                .get(documentSnapshots.size() - 1);
 
 
-                    for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
+                        for (DocumentChange doc : documentSnapshots.getDocumentChanges()) {
 
-                        if (doc.getType() == DocumentChange.Type.ADDED) {
+                            if (doc.getType() == DocumentChange.Type.ADDED) {
 
-                            //USE MODEL CLASS and save one object obtained into Model class list
-                            String BlogPostId = doc.getDocument().getId();
-                            //USE MODEL CLASS and save one object obtained into Model class list
-                            BlogPost blogPost = doc.getDocument().toObject(BlogPost.class).withId(BlogPostId);
-                            blogList.add(blogPost);
+                                //USE MODEL CLASS and save one object obtained into Model class list
+                                String BlogPostId = doc.getDocument().getId();
+                                //USE MODEL CLASS and save one object obtained into Model class list
+                                BlogPost blogPost = doc.getDocument().toObject(BlogPost.class).withId(BlogPostId);
+                                blogList.add(blogPost);
 
-                            blogRecycleAdapter.notifyDataSetChanged();
+                                blogRecycleAdapter.notifyDataSetChanged();
+                            }
                         }
+
                     }
 
                 }
-
-            }
-        });
+            });
+        }
     }
 
 

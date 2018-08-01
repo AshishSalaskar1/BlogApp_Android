@@ -6,4 +6,5 @@
     <color name="Button">#ee495a</color>
     <color name="btnBack">#f01a76</color>
     <color name="bottom_text">#01ffd3</color>
+    <color name="BodyBackground">#141F37</color>
 </resources>

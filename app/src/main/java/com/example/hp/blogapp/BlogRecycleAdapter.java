@@ -124,48 +124,51 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
 
 
 
-        //Get Like Count
-        firebaseFirestore.collection("Posts/"+ blogPostId + "/Likes").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                if(!documentSnapshots.isEmpty()){
-                    int count = documentSnapshots.size();
-                    holder.setLikes(count);
-                }
-                else{
-                    holder.setLikes(0);
-                }
-            }
-        });
 
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            //Get Like Count
+            firebaseFirestore.collection("Posts/" + blogPostId + "/Likes").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                    if (!documentSnapshots.isEmpty()) {
+                        int count = documentSnapshots.size();
+                        holder.setLikes(count);
+                    } else {
+                        holder.setLikes(0);
+                    }
+                }
+            });
+        }
         //Get Comments Count
-        firebaseFirestore.collection("Posts/"+ blogPostId + "/Comments").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                if(!documentSnapshots.isEmpty()){
-                    int countComments = documentSnapshots.size();
-                    holder.setComments(countComments);
-                }
-                else{
-                    holder.setComments(0);
-                }
-            }
-        });
 
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            firebaseFirestore.collection("Posts/" + blogPostId + "/Comments").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                    if (!documentSnapshots.isEmpty()) {
+                        int countComments = documentSnapshots.size();
+                        holder.setComments(countComments);
+                    } else {
+                        holder.setComments(0);
+                    }
+                }
+            });
+        }
 
         //GEt like
-        firebaseFirestore.collection("Posts/"+ blogPostId + "/Likes").document(currentUser).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
-                if(documentSnapshot.exists()) {
-                    holder.BlogLikeBtn.setImageDrawable(context.getDrawable(R.mipmap.image_like_red));
-                }
-                else{
-                    holder.BlogLikeBtn.setImageDrawable(context.getDrawable(R.mipmap.image_like_gray));
-                }
-            }
-        });
 
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            firebaseFirestore.collection("Posts/" + blogPostId + "/Likes").document(currentUser).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
+                    if (documentSnapshot.exists()) {
+                        holder.BlogLikeBtn.setImageDrawable(context.getDrawable(R.mipmap.image_like_red));
+                    } else {
+                        holder.BlogLikeBtn.setImageDrawable(context.getDrawable(R.mipmap.image_like_gray));
+                    }
+                }
+            });
+        }
 
 
         //Pressed Like Button
@@ -173,24 +176,26 @@ public class BlogRecycleAdapter extends RecyclerView.Adapter<BlogRecycleAdapter.
             @Override
             public void onClick(View view) {
 
-                firebaseFirestore.collection("Posts/"+ blogPostId + "/Likes").document(currentUser).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
-                        if(!task.getResult().exists()){
-                            Map<String,Object> likeMap = new HashMap<>();
-                            likeMap.put("timeStamp", FieldValue.serverTimestamp());
-                            firebaseFirestore.collection("Posts/"+ blogPostId + "/Likes").document(currentUser).set(likeMap);
+                    firebaseFirestore.collection("Posts/" + blogPostId + "/Likes").document(currentUser).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                            if (!task.getResult().exists()) {
+                                Map<String, Object> likeMap = new HashMap<>();
+                                likeMap.put("timeStamp", FieldValue.serverTimestamp());
+                                firebaseFirestore.collection("Posts/" + blogPostId + "/Likes").document(currentUser).set(likeMap);
+                            } else {
+
+                                firebaseFirestore.collection("Posts/" + blogPostId + "/Likes").document(currentUser).delete();
+                            }
+
                         }
-                        else{
-
-                            firebaseFirestore.collection("Posts/"+ blogPostId + "/Likes").document(currentUser).delete();
-                        }
-
-                    }
-                });
+                    });
 
 
+                }
             }
         });
 
