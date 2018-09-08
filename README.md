@@ -1,6 +1,9 @@
 # BlogApp Android
 A simple Blog app implemented using Firebase Backend
 
+Want to install & try this app on your phone: 
+[Download APK](https://drive.google.com/open?id=1FpDYKiPQiwpRZp6omAvPFVyefBEBFCll)
+
 ## Features Implemented
 - User Login, SignUp and User Authentication
 - Add post with Image and description
